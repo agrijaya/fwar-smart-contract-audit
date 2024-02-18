@@ -214,12 +214,6 @@ contract FWAR is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC2
     }
 
     //--BURN
-    function burn(address account, uint256 amount) public virtual override {
-        require(account != address(0), "ERC20: burn from the zero address");
-        require(_balances[account] >= amount, "ERC20: transfer amount exceeds balance");
-        _burn(account, amount);
-    }
-
     function burnFrom(address account, uint256 amount) public virtual override {
         // uint256 decreasedAllowance = allowance(account, _msgSender()).sub(amount, "ERC20: burn amount exceeds allowance");
         uint256 decreasedAllowance = allowance(account, _msgSender()) - amount;
