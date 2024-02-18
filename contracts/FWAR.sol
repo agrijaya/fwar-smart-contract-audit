@@ -198,11 +198,11 @@ contract FWAR is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC2
         return _lockWhiteList[owner];
     }
 
-    function addToLockWhitelist(address wallet)  onlyRole(DEFAULT_ADMIN_ROLE) external {
+    function addToLockWhitelist(address wallet) external onlyRole(DEFAULT_ADMIN_ROLE) {
         _lockWhiteList[wallet] = true;
     }
 
-    function removeFromLockWhitelist(address wallet)  onlyRole(DEFAULT_ADMIN_ROLE) external {
+    function removeFromLockWhitelist(address wallet) external onlyRole(DEFAULT_ADMIN_ROLE) {
         _lockWhiteList[wallet] = false;
     }
 
@@ -217,7 +217,7 @@ contract FWAR is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC2
     function burn(address account, uint256 amount) public virtual override {
         require(account != address(0), "ERC20: burn from the zero address");
         require(_balances[account] >= amount, "ERC20: transfer amount exceeds balance");
-        _burn(_msgSender(), amount);
+        _burn(account, amount);
     }
 
     function burnFrom(address account, uint256 amount) public virtual override {
