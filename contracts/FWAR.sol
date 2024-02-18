@@ -15,7 +15,6 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 contract FWAR is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC20PausableUpgradeable, AccessControlUpgradeable, ERC20PermitUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
     bytes32 public constant BLACKLIST_ROLE = keccak256("BLACKLIST_ROLE");
 
     mapping (address => uint256) private _balances;
@@ -69,7 +68,6 @@ contract FWAR is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC2
         _grantRole(DEFAULT_ADMIN_ROLE, defaultAdmin);
         _grantRole(PAUSER_ROLE, pauser);
         _grantRole(MINTER_ROLE, minter);
-        _grantRole(BURNER_ROLE, burner);
         _grantRole(BLACKLIST_ROLE, defaultAdmin);
         locked = icoLocked;
     }
@@ -216,7 +214,7 @@ contract FWAR is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC2
     }
 
     //--BURN
-    function burn(address account, uint256 amount) public onlyRole(BURNER_ROLE) {
+    function burn(address account, uint256 amount) public virtual override {
         require(account != address(0), "ERC20: burn from the zero address");
         require(_balances[account] >= amount, "ERC20: transfer amount exceeds balance");
         _burn(_msgSender(), amount);
