@@ -42,8 +42,6 @@ contract FWAR is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC2
     mapping(address => BlacklistEntry) public blacklist;
 
     // event Transfer(address indexed _from, address indexed _to, uint256 _value);
-    event Minted(address indexed to, uint256 amount);
-    event Burned(address indexed from, uint256 amount);
 
     event AddedToBlacklist(address indexed account, string reason);
     event RemovedFromBlacklist(address indexed account);
