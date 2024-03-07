@@ -16,15 +16,20 @@ contract FWAR is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC2
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant BLACKLIST_ROLE = keccak256("BLACKLIST_ROLE");
 
-    mapping (address => uint256) private _balances;
-    mapping (address => mapping (address => uint256)) private _allowances;
-    mapping (address => bool) private _lockWhiteList;
-
-    bool private locked;
-
-    mapping(address => TokenHolderInfo) public tokenHolderInfos;
     address[] public holderToken;
     uint256 public _userId;
+    bool private locked;
+
+    mapping(address => mapping (address => uint256)) private _allowances;
+    mapping (address => uint256) private _balances;
+
+    mapping(address => TokenHolderInfo) public tokenHolderInfos;
+    mapping(address => BlacklistEntry) public blacklist;
+    mapping(address => bool) private _lockWhiteList;
+
+    event AddedGroupToBlacklist(address indexed account, string reason);
+    event AddedToBlacklist(address indexed account, string reason);
+    event RemovedFromBlacklist(address indexed account);
 
     struct TokenHolderInfo {
         uint256 _tokenId;
@@ -39,20 +44,16 @@ contract FWAR is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC2
         string reason;
     }
 
-    mapping(address => BlacklistEntry) public blacklist;
 
     // event Transfer(address indexed _from, address indexed _to, uint256 _value);
 
-    event AddedToBlacklist(address indexed account, string reason);
-    event RemovedFromBlacklist(address indexed account);
-    event AddedGroupToBlacklist(address indexed account, string reason);
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
 
-    function initialize(address defaultAdmin, address pauser, address minter, address burner, bool icoLocked)
+    function initialize(address defaultAdmin, address pauser, address minter, bool icoLocked)
         initializer public
     {
         __ERC20_init("FWA Revolution", "FWAR");
