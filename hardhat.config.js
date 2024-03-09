@@ -34,15 +34,15 @@ module.exports = {
     //  chainId: 1337,
     //  allowUnlimitedContractSize: true
     },
-    ganache: {
-        chainId: 1337,
-        allowUnlimitedContractSize: true,
-        url: 'http://localhost:7545'
-    },
-    mumbai: {
-      url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.alchemy_mumbai_key}`,
-      accounts: [`${process.env.private_key}`]
-    },
+    // ganache: {
+    //     chainId: 1337,
+    //     allowUnlimitedContractSize: true,
+    //     url: 'http://localhost:7545'
+    // },
+    // mumbai: {
+    //   url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.alchemy_mumbai_key}`,
+    //   accounts: [`${process.env.private_key}`]
+    // },
     // mainnet: {
     //   url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.mainnet_key}`, // or any other JSON-RPC provider
     //   accounts: [`${process.env.private_key}`],

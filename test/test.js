@@ -1,25 +1,94 @@
-require('dotenv').config()
-const { ethers, JsonRpcProvider } = require('ethers');
-const Token = require("../artifacts/contracts/PRESALE.sol/PRESALE.json")
-// const provider = new ethers.providers.InfuraProvider("goerli");
-const provider = new JsonRpcProvider("http://127.0.0.1:8545/");
-const address = ""
-const signer = new ethers.Wallet(process.env.private_key, provider);
-const contract = new ethers.Contract(address, Token.abi, provider)
-const contractWithSigner = contract.connect(signer);
-let overrides = {
-  // To convert Ether to Wei:
-  value: ethers.parseEther("0.2")     // ether in this case MUST be a string
-};
+require("dotenv").config();
+const {deployTokenFixture} = require("./util");
+const {expect} = require("chai");
+require("@nomicfoundation/hardhat-chai-matchers")
+// const { ethers } = require("hardhat");
+const { loadFixture } = require("@nomicfoundation/hardhat-toolbox/network-helpers");
 
-const main = async () => {
-  await contractWithSigner._setClosingTime(1701356400)
-  const data = await contract.closingTime()
-  // await contractWithSigner.buyTokens("0xBb8d4f34273Ef13870eBb5f56458D5e63a97dDd0", overrides)
-  console.log(new Date(data.toNumber()));
-  // await contractWithSigner.removeFromLockWhitelist("0xfB11f69093Fe71B72B9650cb4e1775bD89f19EeC")
-  // await contractWithSigner.lock()
-  // console.log(await contract.lockWhiteList("0xfB11f69093Fe71B72B9650cb4e1775bD89f19EeC"))
-  ;
-}
-main();
+describe("Token contract", function () {
+
+  describe("Deployment", function () {
+
+
+    it("Should set the right owner --", async function () {
+      const fixture = await deployTokenFixture();
+      expect(fixture.getFwartoken().runner.address).to.equal(fixture.getOwner());
+    });
+
+
+  //   it("Should assign the total supply of tokens to the owner", async function () {
+  //     const { fwarToken, owner } = await loadFixture(fixture);
+  //     const ownerBalance = await fwarToken.balanceOf(owner.address);
+  //     expect(await fwarToken.totalSupply()).to.equal(ownerBalance);
+  //   });
+
+
+  //   it("Should have 20% of FWAREVO tokens", async () => {
+  //     const {
+  //       fwarToken,
+  //       fwarTokenCrowdsale,
+  //       fwarTokenCrowdsaleAddress,
+  //       rate,
+  //       totalSupply,
+  //       value,
+  //     } = await loadFixture(deployTokenFixture);
+  //     expect(await fwarToken.name()).to.equal("FWAREVO");
+  //     expect(await fwarToken.symbol()).to.equal("FWAR");
+  //     expect(await fwarToken.decimals()).to.equal(18);
+  //     expect(totalSupply).to.equal(value);
+
+  //     await fwarToken.approve(
+  //       fwarTokenCrowdsaleAddress,
+  //       (totalSupply * 20n) / 100n
+  //     );
+
+  //     expect(await fwarTokenCrowdsale.rateValue()).to.equal(rate);
+  //     expect(await fwarTokenCrowdsale.remainingTokens()).to.equal(
+  //       100000000000000000000000000n
+  //     );
+  //   });
+  });
+
+  // describe("Transactions", function () {
+  //   it("Should transfer tokens between accounts", async function () {
+  //     const { fwarToken, owner, addr1, addr2 } = await loadFixture(
+  //       deployTokenFixture
+  //     );
+  //     await fwarToken.release();
+  //     await expect(
+  //       fwarToken.transfer(addr1.address, 50)
+  //     ).to.changeTokenBalances(fwarToken, [owner, addr1], [-50, 50]);
+  //     await expect(
+  //       fwarToken.connect(addr1).transfer(addr2.address, 50)
+  //     ).to.changeTokenBalances(fwarToken, [addr1, addr2], [-50, 50]);
+  //   });
+
+  //   it("Should emit Transfer events", async function () {
+  //     const { fwarToken, owner, addr1, addr2 } = await loadFixture(
+  //       deployTokenFixture
+  //     );
+  //     await fwarToken.release();
+  //     await expect(fwarToken.transfer(addr1.address, 50))
+  //       .to.emit(fwarToken, "Transfer")
+  //       .withArgs(owner.address, addr1.address, 50);
+
+  //     await expect(fwarToken.connect(addr1).transfer(addr2.address, 50))
+  //       .to.emit(fwarToken, "Transfer")
+  //       .withArgs(addr1.address, addr2.address, 50);
+  //   });
+
+  //   it("Should fail if sender doesn't have enough tokens", async function () {
+  //     const { fwarToken, owner, addr1 } = await loadFixture(deployTokenFixture);
+  //     await fwarToken.release();
+  //     const initialOwnerBalance = await fwarToken.balanceOf(owner.address);
+
+  //     await expect(
+  //       fwarToken.connect(addr1).transfer(owner.address, 1)
+  //     ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
+
+  //     expect(await fwarToken.balanceOf(owner.address)).to.equal(
+  //       initialOwnerBalance
+  //     );
+  //   });
+  // });
+});
