@@ -16,11 +16,11 @@ describe("Token contract", function () {
     });
 
 
-  //   it("Should assign the total supply of tokens to the owner", async function () {
-  //     const { fwarToken, owner } = await loadFixture(fixture);
-  //     const ownerBalance = await fwarToken.balanceOf(owner.address);
-  //     expect(await fwarToken.totalSupply()).to.equal(ownerBalance);
-  //   });
+    it("Should assign the total supply of tokens to the owner", async function () {
+      const fixture = await deployTokenFixture();
+      const ownerBalance = await fixture.getFwartoken().balanceOf(fixture.getOwner())
+      expect(await fixture.getTotalSupply()).to.equal(ownerBalance);
+    });
 
 
   //   it("Should have 20% of FWAREVO tokens", async () => {
