@@ -49,7 +49,7 @@ describe("Token contract", function () {
   //   });
   });
 
-  // describe("Transactions", function () {
+  describe("Transactions", function () {
   //   it("Should transfer tokens between accounts", async function () {
   //     const { fwarToken, owner, addr1, addr2 } = await loadFixture(
   //       deployTokenFixture
@@ -90,5 +90,5 @@ describe("Token contract", function () {
   //       initialOwnerBalance
   //     );
   //   });
-  // });
+  });
 });
