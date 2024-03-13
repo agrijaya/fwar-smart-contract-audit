@@ -20,8 +20,9 @@ contract FWAR is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC2
     uint256 public _userId;
     bool private locked;
 
-    mapping(address => mapping (address => uint256)) private _allowances;
-    mapping (address => uint256) private _balances;
+    // mapping(address => mapping (address => uint256)) private _allowances;
+    // mapping (address => uint256) private _balances;
+    ERC20Storage storage 
 
     mapping(address => TokenHolderInfo) public tokenHolderInfos;
     mapping(address => BlacklistEntry) public blacklist;
@@ -184,11 +185,19 @@ contract FWAR is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC2
     }
 
     //--LOCK
-    function release() external onlyRole(DEFAULT_ADMIN_ROLE) {
+    // function release() external onlyRole(DEFAULT_ADMIN_ROLE) {
+    //     locked = false;
+    // }
+ 
+    function release() external {
         locked = false;
     }
 
-    function lock() external onlyRole(DEFAULT_ADMIN_ROLE) {
+    // function lock() external onlyRole(DEFAULT_ADMIN_ROLE) {
+    //     locked = true;
+    // }
+
+    function lock() external {
         locked = true;
     }
 
@@ -236,5 +245,13 @@ contract FWAR is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC2
             emit AddedGroupToBlacklist(accounts[i], reason);
         }
     }   
+ 
 
+
+
+
+    // LOGGING
+    function getLockStatus() external view returns (address) {
+        return msg.sender;
+    }
 }

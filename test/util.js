@@ -1,10 +1,12 @@
 const { ethers } = require("hardhat");
 
-async function deployTokenFixture() {
+async function deploySmartContract() {
   
-  const fixture = new Fixture();
+  const fixture = new SmartContract();
   const [owner, addr1, addr2] = await ethers.getSigners();
-  const FWAR = await ethers.getContractFactory("FWAR");
+  const FWAR = await ethers.getContractFactory("FWAR", {
+
+  });
   const rate = 50000;
 
   const fwarToken = await FWAR.deploy(owner);
@@ -25,9 +27,22 @@ async function deployTokenFixture() {
   return fixture;
 }
 
-module.exports = { deployTokenFixture };
+module.exports = { deploySmartContract, deploy };
 
-class Fixture {
+async function deploy(){
+  // compile contract first with: npx hardhat compile
+  // make sure ./artifacts folder generated
+  // deploy using hardhat
+  await ethers.deployContract('FWAR')
+
+  // // Store the ABI and Bytecode into a JSON file
+  // const artifact = JSON.stringify({ abi, bytecode }, null, 2);
+  // await fs.writeFile("Demo.json", artifact);
+}
+
+function compile(){}
+
+class SmartContract {
 
   setFwartoken(token) {
     this.token = token;

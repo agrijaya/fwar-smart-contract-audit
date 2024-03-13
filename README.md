@@ -68,3 +68,60 @@ notes:
 
 TODO:
 1. Add Validation
+
+```npx hardhat run scripts/deploy.js --network ganache```
+
+
+
+
+
+------------------------------
+
+
+Multisig wallet
+
+constructor:
+1. list of owners
+2. required number
+
+
+modifier:
+1. onlyWallet
+2. ownerDoestNotExist(owner)
+3. ownerExists(owner)
+4. transactionsExists(transactionId)
+5. confirmed(transactionId, owner)
+6. notConfirmed(transactionId, owner)
+7. notExecuted(transactionId)
+8. notNull(_address)
+9. validRequirement(ownerCount, required)
+
+
+function:
+1. addOwner(owner)
+2. removeOwner(owner)
+3. replaceOwner(owner)
+4. changeRequiremet(required)
+5. submitTransaction(destination, value, data)
+6. confirmTransaction(transactionid)
+7. revokeConfirmation(transactionId)
+8. executeTransaction(transactionId)
+9. external_call(destinatoin, value, datalength, data)
+10. isConfirmed(transactionId)
+11. addTransaction(destination, value, datas)
+12. getTransactionCount(pending, executed)
+13. getOwners
+14. getConfirmation(transactionId)
+
+
+event:
+1. confirmation
+2. revocation
+3. submission
+4. execution
+5. executionfailure
+6. deposit
+7. owneraddtion
+8. ownerremoval
+9. requirementchange
+

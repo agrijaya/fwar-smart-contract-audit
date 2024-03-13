@@ -1,4 +1,7 @@
-const {deployTokenFixture} = require('./test/util')
+const { deploy } = require("./test/util");
 
+async function main() {
+    deploy()
+}
 
-console.log(deployTokenFixture());
+main();
