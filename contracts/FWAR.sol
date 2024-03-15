@@ -20,9 +20,7 @@ contract FWAR is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC2
     uint256 public _userId;
     bool private locked;
 
-    // mapping(address => mapping (address => uint256)) private _allowances;
-    // mapping (address => uint256) private _balances;
-    ERC20Storage storage 
+    ERC20Storage private _storage 
 
     mapping(address => TokenHolderInfo) public tokenHolderInfos;
     mapping(address => BlacklistEntry) public blacklist;
@@ -99,7 +97,7 @@ contract FWAR is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC2
     }
 
     function balanceOf(address account) public view override returns (uint256) {
-        return _balances[account];
+        return _storage._balances[account];
     }
 
     //--TRANSFER
@@ -108,9 +106,9 @@ contract FWAR is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC2
         require(!blacklist[recipient].isBlacklisted, "Recipient is blacklisted");
         _transfer(sender, recipient, amount);
         // DISABLED IF DEMO ------------ 
-        require(amount > _allowances[sender][_msgSender()], "ERC20: transfer amount exceeds allowance");
+        require(amount > _storage._allowances[sender][_msgSender()], "ERC20: transfer amount exceeds allowance");
         // --------------------------
-        _approve(sender, _msgSender(), _allowances[sender][_msgSender()] - amount);
+        _approve(sender, _msgSender(), _storage._allowances[sender][_msgSender()] - amount);
         return true;
     }
 
@@ -126,7 +124,7 @@ contract FWAR is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC2
         // ------ DISABLED IF DEMO ----
         require(!locked || _lockWhiteList[_msgSender()] || _lockWhiteList[recipient], "ERC20: Not release yet");
         // ------
-        require(_balances[_msgSender()] >= amount, "ERC20: transfer amount exceeds balance");
+        require(_storage._balances[_msgSender()] >= amount, "ERC20: transfer amount exceeds balance");
         
         // _transfer(_msgSender(), recipient, amount);
         _transfer(_msgSender(), recipient, amount);
@@ -137,8 +135,8 @@ contract FWAR is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC2
 
     function _addToTokenHolder(address recipient, uint256 amount) internal virtual {
         inc();
-        _balances[_msgSender()] -= amount;
-        _balances[recipient] += amount;
+        _storage._balances[_msgSender()] -= amount;
+        _storage._balances[recipient] += amount;
 
         TokenHolderInfo storage tokenHolderInfo = tokenHolderInfos[recipient];
 
@@ -167,20 +165,20 @@ contract FWAR is Initializable, ERC20Upgradeable, ERC20BurnableUpgradeable, ERC2
 
     //--ALLOWANCE
     function allowance(address owner, address spender) public view virtual override returns (uint256) {
-        return _allowances[owner][spender];
+        return _storage._allowances[owner][spender];
     }
 
     function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {
         require(!blacklist[_msgSender()].isBlacklisted, "Sender is blacklisted");
         require(!blacklist[spender].isBlacklisted, "Spender is blacklisted");
-        _approve(_msgSender(), spender, _allowances[_msgSender()][spender] + addedValue);
+        _approve(_msgSender(), spender, _storage._allowances[_msgSender()][spender] + addedValue);
         return true;
     }
 
     function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {
-        // _approve(_msgSender(), spender, _allowances[_msgSender()][spender].sub(subtractedValue, "ERC20: decreased allowance below zero"));
-        require((_allowances[_msgSender()][spender] - subtractedValue) < 0, "ERC20: decreased allowance below zero");
-        _approve(_msgSender(), spender, _allowances[_msgSender()][spender] - subtractedValue);
+        // _approve(_msgSender(), spender, _storage._allowances[_msgSender()][spender].sub(subtractedValue, "ERC20: decreased allowance below zero"));
+        require((_storage._allowances[_msgSender()][spender] - subtractedValue) < 0, "ERC20: decreased allowance below zero");
+        _approve(_msgSender(), spender, _storage._allowances[_msgSender()][spender] - subtractedValue);
         return true;
     }
 

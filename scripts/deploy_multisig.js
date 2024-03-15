@@ -1,17 +1,26 @@
 const { Web3 } = require("web3");
-const { abi, bytecode } = require('../artifacts/contracts/FWAR.sol/FWAR.json')
+const { abi, bytecode } = require('../contracts/gnosis-multisig/Multisig.json')
+const {account, host} = require('./config.json') 
 
 async function main() {
-  const network = process.env.ETHEREUM_NETWORK;
-  const web3 = new Web3('HTTP://127.0.0.1:7545');
+  const web3 = new Web3(host.ganache);
 
-  const signer = web3.eth.accounts.privateKeyToAccount('0x2d90c841de4d0ae7e36089da8611c28de9bd6c70b8bfccc6ee7a66be4c9f75de');
+  const signer = web3.eth.accounts.privateKeyToAccount(account.private_key);
   web3.eth.accounts.wallet.add(signer);
 
   // Using the signing account to deploy the contract
   const contract = new web3.eth.Contract(abi);
   contract.options.data = bytecode;
-  const deployTx = contract.deploy();
+  const deployTx = contract.deploy({
+    arguments: [
+      [
+        "0xe023fA4F589bA89082D753C2F55DD08c5A219c3A",
+        "0x332689176f09f6E02Dc1CE73958fC4881bff1AEB",
+        "0xCdeC6B030cd919DEa66385eb98B815317Eb5EF8D",
+      ],
+      2,
+    ],
+  });
   const deployedContract = await deployTx
     .send({
       from: signer.address,
@@ -19,14 +28,11 @@ async function main() {
     })
     .once("transactionHash", (txhash) => {
       console.log(`Mining deployment transaction ...`);
-      console.log(`https://${network}.etherscan.io/tx/${txhash}`);
     });
   // The contract is now deployed on chain!
-  console.log(`Contract deployed at ${deployedContract.options.address}`);
   console.log(
     `Add DEMO_CONTRACT to the.env file to store the contract address: ${deployedContract.options.address}`,
   );
 }
 
-require("dotenv").config();
 main();

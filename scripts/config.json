@@ -1,0 +1,10 @@
+{
+    "host":{
+        "ganache" :"http://127.0.0.1:8545",
+        "goerli" :"",
+        "sepolia" :""
+    },
+    "account":{
+        "private_key":"0x85805ac3312364ba188bc3b32ab4b4936040168cf467c7c0b17268c254eb81fe"
+    }
+}
