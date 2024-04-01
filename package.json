@@ -11,14 +11,17 @@
     "ethers": "^6.8.0",
     "hardhat": "^2.19.4",
     "moment": "^2.29.4",
-    "sleep-promise": "^9.1.0"
+    "sleep-promise": "^9.1.0",
+    "web3": "^4.6.0"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.2",
     "@nomicfoundation/hardhat-ethers": "^3.0.5",
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "@nomicfoundation/hardhat-verify": "^2.0.3",
+    "@nomiclabs/hardhat-ganache": "^2.0.1",
     "@openzeppelin/hardhat-upgrades": "^3.0.2",
-    "hardhat-deploy": "^0.11.43"
+    "hardhat-deploy": "^0.11.43",
+    "hardhat-ganache": "^1.0.1"
   }
 }
